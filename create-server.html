@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWEN v1.0 - 서버 생성</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
+    </header>
+
+    <div class="sub-header">
+        <div class="breadcrumb">호스팅 패널 > 서버 생성</div>
+        <nav class="sub-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="hosting.html" class="active">Hosting pannel</a>
+            <a href="billing.html">Billing Page</a>
+            <a href="pricing.html">Pricing</a>
+        </nav>
+    </div>
+
+    <main class="create-server-container">
+        <div class="create-server-form">
+            <h2>프로젝트 생성</h2>
+            <form id="createServerForm">
+                <div class="form-section">
+                    <h3>입력 폼</h3>
+                    <div class="form-group">
+                        <label for="projectName">1. 도메인 = 프로젝트명</label>
+                        <input type="text" id="projectName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="serverDomain">2. 서브 도메인 추가하는 방식</label>
+                        <input type="text" id="serverDomain" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="estimatedCost">3. 예상 비용(잔액 알림!!)</label>
+                        <div class="cost-info">
+                            <p>오토스케일링 등 자동 확장 사용시 최대 2만원</p>
+                            <p>그 외에 활동량이 적은 클라이언트부터 점근 제어로 부하 감소 등 추가 옵션을 선택할 수 있도록</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>인프라 구성도</h3>
+                    <div class="infra-diagram">
+                        <img src="images/infra_1.png" alt="인프라 구성도">
+                        <div class="infra-details">
+                            <div class="resource-spec">
+                                <h4>RAM (GB)</h4>
+                                <input type="range" id="ramSize" min="1" max="16" value="8" class="range-slider">
+                                <span class="range-value">8GB</span>
+                            </div>
+                            <div class="resource-spec">
+                                <h4>Storage (GB)</h4>
+                                <input type="range" id="storageSize" min="20" max="500" value="100" class="range-slider">
+                                <span class="range-value">100GB</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>선택 옵션</h3>
+                    <div class="option-grid">
+                        <div class="option-item">
+                            <h4>기본: 환경 선택(램)</h4>
+                            <p>확장: 컨테이너 신택시 세부 옵션 조정</p>
+                        </div>
+                        <div class="option-item">
+                            <h4>컨테이너의 세부 옵션 조정</h4>
+                            <p>기본 스토리지</p>
+                            <p>이미지 선택(mysql, mariadb)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="history.back()">취소</button>
+                    <button type="submit" class="btn-submit">생성하기</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        // RAM과 Storage 슬라이더의 값을 실시간으로 업데이트
+        document.querySelectorAll('.range-slider').forEach(slider => {
+            const valueDisplay = slider.nextElementSibling;
+            slider.addEventListener('input', () => {
+                const unit = slider.id === 'ramSize' ? 'GB' : 'GB';
+                valueDisplay.textContent = `${slider.value}${unit}`;
+            });
+        });
+
+        // 폼 제출 처리
+        document.getElementById('createServerForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            // 여기에 서버 생성 로직 추가
+            alert('서버 생성이 요청되었습니다.');
+            window.location.href = 'hosting.html';
+        });
+    </script>
+</body>
+</html> 

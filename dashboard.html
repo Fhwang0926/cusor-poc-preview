@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWEN v1.0 - 대시보드</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
+    </header>
+
+    <div class="sub-header">
+        <div class="breadcrumb">대시보드 > 호스팅</div>
+        <nav class="sub-nav">
+            <a href="dashboard.html" class="active">Dashboard</a>
+            <a href="hosting.html">Hosting pannel</a>
+            <a href="billing.html">Billing Page</a>
+            <a href="pricing.html">Pricing</a>
+        </nav>
+    </div>
+
+    <main class="dashboard-grid">
+        <div class="grid-item">
+            <h2>실시간 트래픽 & 성능</h2>
+            <div class="chart-container">
+                <div class="chart-header">
+                    <select id="metricSelect" class="metric-select">
+                        <option value="traffic">트래픽</option>
+                        <option value="cpu">CPU 사용률</option>
+                        <option value="memory">메모리 사용률</option>
+                    </select>
+                    <div class="time-range">
+                        <button class="time-button active" data-range="1h">1시간</button>
+                        <button class="time-button" data-range="6h">6시간</button>
+                        <button class="time-button" data-range="24h">24시간</button>
+                    </div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">현재 RPS:</span>
+                        <span class="stat-value" id="currentRps">245</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">CPU:</span>
+                        <span class="stat-value" id="currentCpu">45%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">메모리:</span>
+                        <span class="stat-value" id="currentMemory">62%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>보안 알림</h2>
+            <table class="security-table">
+                <thead>
+                    <tr>
+                        <th>시간</th>
+                        <th>유형</th>
+                        <th>공격자</th>
+                        <th>자동 대응</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10:25</td>
+                        <td>SQL Injection</td>
+                        <td>192.168.0.10</td>
+                        <td>모니터링</td>
+                    </tr>
+                    <tr>
+                        <td>10:30</td>
+                        <td>DDoS</td>
+                        <td>203.0.113.5</td>
+                        <td>차단</td>
+                    </tr>
+                    <tr>
+                        <td>09:30</td>
+                        <td>비정상 활동</td>
+                        <td>13.2.22.12</td>
+                        <td>의심</td>
+                    </tr>
+                    <tr>
+                        <td>09:10</td>
+                        <td>자원 소진 공격</td>
+                        <td>192.168.2.33</td>
+                        <td>차단</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-item">
+            <h2>구독/결제 현황</h2>
+            <div class="subscription-info">
+                <p>현재 플랜: Pro (월 5만원 + 초과 과금)</p>
+                <table class="billing-table">
+                    <thead>
+                        <tr>
+                            <th>기간</th>
+                            <th>기본료</th>
+                            <th>추가요금</th>
+                            <th>합계</th>
+                            <th>결제일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-04</td>
+                            <td>50,000원</td>
+                            <td>10,000원</td>
+                            <td>60,000원</td>
+                            <td>2025-04-25</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="billing-details">결제 상세</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>AI 자동 운영 알림</h2>
+            <ul class="event-list">
+                <li>13:35 - <strong class="text-green">성공</strong> - 인스턴스 2개로 축소 (트래픽 감소)</li>
+                <li>10:35 - <strong class="text-green">성공</strong> - 인스턴스 5개로 확장 (트래픽 폭증)</li>
+                <li>10:30 - <strong class="text-green">성공</strong> - 트래픽 증가 예상으로 인스턴스 예약</li>
+                <li>07:30 - <strong class="text-red">실패</strong> - 트래픽 증가 예상으로 인스턴스 예약, 사유 : 무료 플랜</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html> 
