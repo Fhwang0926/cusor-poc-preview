@@ -76,58 +76,191 @@
             <!-- 우측 정보 패널 -->
             <div class="info-panel">
                 <div class="info-section">
-                    <h3>기본: 환경 선택(웹)</h3>
+                    <h3>인프라 정보</h3>
+                    <div class="form-group">
+                        <label for="networkTemplate">인프라 구성 선택:</label>
+                        <select id="networkTemplate" class="form-control">
+                            <option value="basic">기본 웹서버 구성</option>
+                            <option value="loadBalanced">로드밸런서 구성</option>
+                            <option value="microservices">마이크로서비스 구성</option>
+                        </select>
+                    </div>
                     <div id="networkDiagram" class="network-diagram"></div>
                 </div>
-                <div class="form-section">
-                    <h3>리소스 설정</h3>
-                    <div class="form-group">
-                        <label for="ram">RAM (GB)</label>
-                        <input type="range" id="ram" name="ram" min="1" max="16" value="8" class="slider">
-                        <div class="slider-value">8GB</div>
-                    </div>
-                    <div class="form-group">
-                        <label for="storage">Storage (GB)</label>
-                        <input type="range" id="storage" name="storage" min="50" max="500" value="100" class="slider">
-                        <div class="slider-value">100GB</div>
+
+                <div id="resourceForm" class="form-section">
+                    <h3>리소스 제한 설정 - <span id="selectedNodeLabel">노드를 선택하세요</span></h3>
+                    <div class="resource-settings">
+                        <!-- <div class="form-group">
+                            <div class="resource-label">
+                                <label for="cpu">CPU <span class="recommended">(권장: 4 Core)</span></label>
+                                <span class="current-value"><span id="cpuValue">4</span> Core</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="cpu" name="cpu" min="1" max="16" value="4" class="slider" disabled>
+                                <div class="range-marks">
+                                    <span>1</span>
+                                    <span>4</span>
+                                    <span>8</span>
+                                    <span>16</span>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="form-group">
+                            <div class="resource-label">
+                                <label for="ram">메모리 제한 <span class="recommended">(권장: 8 GB)</span></label>
+                                <span class="current-value"><span id="ramValue">8</span> GB</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="ram" name="ram" min="2" max="64" value="8" class="slider" disabled>
+                                <div class="range-marks">
+                                    <span>2</span>
+                                    <span>8</span>
+                                    <span>32</span>
+                                    <span>64</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="resource-label">
+                                <label for="storage">스토리지 제한 <span class="recommended">(권장: 100 GB)</span></label>
+                                <span class="current-value"><span id="storageValue">100</span> GB</span>
+                            </div>
+                            <div class="range-container">
+                                <input type="range" id="storage" name="storage" min="50" max="500" value="100" class="slider" disabled>
+                                <div class="range-marks">
+                                    <span>50</span>
+                                    <span>100</span>
+                                    <span>250</span>
+                                    <span>500</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="resource-info">
+                            <p class="info-text">💡 리소스 제한을 설정할 수 있는 노드를 선택하세요. (WEB/DB 서버)</p>
+                            <p class="warning-text">⚠️ 권장 제한 옵션 이상으로 설정할 경우, 설정값에 따라 추가 요금이 과금될 수 있습니다.</p>
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-section">
                     <h3>추가 옵션</h3>
                     <div class="form-group">
-                        ##공용 경로 마운트
+                        <div class="option-row">
+                            <label class="toggle-label">공용 경로 마운트 : /opt/data 경로에 사용자 파일들을 저장 및 공유합니다</label>
+                            <label class="switch">
+                                <input type="checkbox" id="publicPathMount">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
-                        ##도커 이미지 선택
+                        <label for="webType"># 웹 서버 선택</label>
+                        <select id="webType" class="form-control" disabled>
+                            <option value="">웹 서버를 선택하세요</option>
+                            <option value="nginx 1.24">Nginx 1.24 (안정 버전)</option>
+                            <option value="nginx 1.25">Nginx 1.25 (최신 버전)</option>
+                            <option value="apache 2.4">Apache 2.4</option>
+                            <option value="node 20">Node.js 20 LTS</option>
+                            <option value="node 21">Node.js 21</option>
+                            <option value="tomcat 10">Tomcat 10</option>
+                        </select>
+                        <p class="server-select-info">💡 WEB 서버 노드를 선택하면 웹 서버를 선택할 수 있습니다.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="dbType"># 데이터베이스 선택</label>
+                        <select id="dbType" class="form-control" disabled>
+                            <option value="">데이터베이스를 선택하세요</option>
+                            <option value="mariadb 11.2">MariaDB 11.2</option>
+                            <option value="mariadb 10.4">MariaDB 10.4</option>
+                            <option value="postgresql 2.3">PostgreSQL 2.3</option>
+                            <option value="mongodb 10.9">MongoDB 10.9</option>
+                            <option value="mysql">MySQL</option>
+                        </select>
+                        <p class="server-select-info">💡 DB 서버 노드를 선택하면 데이터베이스를 선택할 수 있습니다.</p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
+    <!-- 네트워크 다이어그램 패널에서 버튼 제거 -->
     <div class="network-diagram-panel">
         <div id="network-diagram"></div>
-        <div class="diagram-controls">
-            <button id="zoom-in">확대</button>
-            <button id="zoom-out">축소</button>
-            <button id="reset-view">초기화</button>
-        </div>
     </div>
+
+    <!-- vis.js 라이브러리 추가 -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="module">
+        import { initializeNetworkDiagram, updateNetworkTemplate } from './modules/network-diagram.js';
+        
+        // 전역 변수로 network 선언
+        window.network = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 네트워크 다이어그램 초기화
+            window.network = initializeNetworkDiagram();
+            
+            // 네트워크 템플릿 선택 이벤트 리스너
+            const templateSelect = document.getElementById('networkTemplate');
+            if (templateSelect) {
+                templateSelect.addEventListener('change', (e) => {
+                    updateNetworkTemplate(window.network, e.target.value);
+                });
+            }
+
+            // DB 이미지 선택기 표시/숨김 처리
+            const networkTemplate = document.getElementById('networkTemplate');
+            const dbImageSelector = document.getElementById('dbImageSelector');
+            
+            function updateServerSelectors(selectedNode) {
+                const webTypeSelect = document.getElementById('webType');
+                const dbTypeSelect = document.getElementById('dbType');
+                const nodeLabel = selectedNode ? selectedNode.label.toLowerCase() : '';
+
+                // 웹 서버 선택기 업데이트
+                if (nodeLabel.includes('web')) {
+                    webTypeSelect.disabled = false;
+                } else {
+                    webTypeSelect.disabled = true;
+                    webTypeSelect.value = '';
+                }
+
+                // DB 선택기 업데이트
+                if (nodeLabel.includes('db')) {
+                    dbTypeSelect.disabled = false;
+                } else {
+                    dbTypeSelect.disabled = true;
+                    dbTypeSelect.value = '';
+                }
+            }
+
+            // 노드 선택 이벤트에서 선택기 표시/숨김 처리
+            window.network.on('select', function(params) {
+                const nodeId = params.nodes[0];
+                if (nodeId) {
+                    const node = window.network.body.data.nodes.get(nodeId);
+                    updateServerSelectors(node);
+                } else {
+                    updateServerSelectors(null);
+                }
+            });
+        });
+    </script>
 
     <script>
         // RAM 슬라이더 값 표시
         const ramSlider = document.getElementById('ram');
-        const ramValue = ramSlider.nextElementSibling;
+        const ramValue = document.getElementById('ramValue');
         ramSlider.oninput = function() {
-            ramValue.textContent = this.value + 'GB';
+            ramValue.textContent = this.value;
         }
 
         // Storage 슬라이더 값 표시
         const storageSlider = document.getElementById('storage');
-        const storageValue = storageSlider.nextElementSibling;
+        const storageValue = document.getElementById('storageValue');
         storageSlider.oninput = function() {
-            storageValue.textContent = this.value + 'GB';
+            storageValue.textContent = this.value;
         }
 
         // 서브도메인 추가 함수
@@ -166,25 +299,247 @@
             // 여기에 서브도메인 목록을 포함한 폼 데이터 처리 로직 추가
             console.log('서브도메인 목록:', subdomains);
         });
+
+        // 리소스 슬라이더 값 업데이트
+        function updateResourceValues() {
+            const ram = document.getElementById('ram');
+            const storage = document.getElementById('storage');
+            
+            document.getElementById('ramValue').textContent = ram.value;
+            document.getElementById('storageValue').textContent = storage.value;
+        }
+
+        // 슬라이더 이벤트 리스너
+        document.getElementById('ram').addEventListener('input', updateResourceValues);
+        document.getElementById('storage').addEventListener('input', updateResourceValues);
+
+        // 초기 값 설정
+        updateResourceValues();
     </script>
 
-    <!-- vis.js 라이브러리 추가 -->
-    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-    <script type="module">
-        import { initializeNetworkDiagram, updateNetworkDiagram } from './modules/network-diagram.js';
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            // 네트워크 다이어그램 초기화
-            const network = initializeNetworkDiagram();
-            
-            // 서버 타입 선택 시 다이어그램 업데이트
-            const serverTypeSelect = document.getElementById('server-type');
-            if (serverTypeSelect) {
-                serverTypeSelect.addEventListener('change', (e) => {
-                    updateNetworkDiagram(network, e.target.value);
-                });
-            }
-        });
-    </script>
+    <style>
+    .range-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-top: 0.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .range-marks {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 2px;
+        margin-top: 8px;
+        color: #666;
+        font-size: 0.8rem;
+    }
+
+    .range-container.disabled::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(240, 240, 240, 0.6);
+        border-radius: 8px;
+        pointer-events: none;
+    }
+
+    .resource-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .recommended {
+        color: #666;
+        font-size: 0.85rem;
+        font-weight: normal;
+        margin-left: 0.5rem;
+    }
+
+    .current-value {
+        color: #2563eb;
+        font-weight: 500;
+        font-size: 0.95rem;
+        min-width: 60px;
+        text-align: right;
+    }
+
+    .slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #e0e0e0;
+        outline: none;
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #2563eb;
+        cursor: pointer;
+        box-shadow: none;
+        transition: all 0.2s ease;
+    }
+
+    .slider:disabled::-webkit-slider-thumb {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+
+    .slider::-webkit-slider-runnable-track {
+        height: 6px;
+        border-radius: 3px;
+        background: #e0e0e0;
+    }
+
+    .slider:disabled::-webkit-slider-runnable-track {
+        background: #f0f0f0;
+    }
+
+    .resource-info {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+
+    .info-text {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .warning-text {
+        color: #dc2626;
+        margin: 1rem 0 0 0;
+        font-size: 0.9rem;
+    }
+
+    #resourceForm {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #selectedNodeLabel {
+        color: #2563eb;
+        font-weight: normal;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .toggle-label {
+        font-size: 0.95rem;
+        color: #374151;
+        font-weight: 500;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 24px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e0e0e0;
+        transition: .4s;
+        border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: #2563eb;
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(24px);
+    }
+
+    #webType,
+    #dbType {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        color: #374151;
+        background-color: white;
+        transition: all 0.2s ease;
+    }
+
+    #webType:disabled,
+    #dbType:disabled {
+        background-color: #f3f4f6;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    #webType:focus,
+    #dbType:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    }
+
+    .server-select-info {
+        margin-top: 0.5rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+    </style>
 </body>
 </html> 
