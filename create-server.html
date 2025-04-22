@@ -5,115 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>서버 생성 - Docker 컨테이너 호스팅</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
-    <!-- 헤더 -->
     <header>
-        <div class="logo">
-            <a href="index.html">AWEN</a>
-        </div>
-        <nav>
-            <a href="hosting.html">호스팅</a>
-            <a href="security.html">보안</a>
-            <a href="billing.html">결제</a>
-            <a href="support.html">고객지원</a>
-        </nav>
-        <div class="user">
-            admin@example.com
-        </div>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
     </header>
 
-    <!-- 서브 헤더 -->
     <div class="sub-header">
-        <div class="breadcrumb">
-            호스팅 > 서버 생성
-        </div>
+        <div class="breadcrumb">호스팅 패널 > 서버 생성</div>
         <nav class="sub-nav">
-            <a href="hosting.html">서버 현황</a>
-            <a href="domains.html">도메인</a>
-            <a href="databases.html">데이터베이스</a>
-            <a href="backups.html">백업</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="hosting.html" class="active">Hosting pannel</a>
+            <a href="billing.html">Billing Page</a>
+            <a href="pricing.html">Pricing</a>
         </nav>
     </div>
 
-    <div class="container">
-        <h1>서버 생성</h1>
+    <main class="container">
         <div class="create-server-layout">
             <!-- 서버 생성 폼 -->
             <div class="create-server-form">
-                <h2>서버 정보</h2>
                 <form id="serverForm">
-                    <div class="form-group">
-                        <label for="serverName">서버 이름</label>
-                        <input type="text" id="serverName" name="serverName" required>
+                    <div class="form-section">
+                        <h3>기본 정보</h3>
+                        <div class="form-group">
+                            <label>1. 도메인 또는 공인 IP 를 입력하세요</label>
+                            <input type="text" id="projectName" name="projectName" placeholder="도메인 또는 공인 ip" required>
+                        </div>
+                        <div class="form-group">
+                            <label>2. 서브 도메인 추가</label>
+                            <div class="subdomain-input-group">
+                                <input type="text" id="subDomain" name="subDomain" placeholder="서브도메인 입력">
+                                <button type="button" class="btn-add" onclick="addSubdomain()">추가</button>
+                            </div>
+                            <div class="subdomain-list" id="subdomainList">
+                                <!-- 서브도메인 항목들이 여기에 추가됩니다 -->
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>3. 예상 비용 제한</label>
+                            <div class="cost-input-group">
+                                <div class="cost-input-wrapper">
+                                    <input type="number" id="costLimit" name="costLimit" min="0" step="1000" placeholder="금액 입력" required>
+                                    <span class="currency-unit">원</span>
+                                </div>
+                                <div class="cost-info">
+                                    <p class="cost-warning">※ 오토스케일링 등 자동 확장 사용시 설정한 금액까지만 자동 확장됩니다.</p>
+                                    <p class="cost-tip">💡 활동량이 적은 시간대는 자동으로 리소스가 축소되어 비용이 절감됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="serverType">서버 유형</label>
-                        <select id="serverType" name="serverType" required>
-                            <option value="">선택하세요</option>
-                            <option value="web">웹 서버</option>
-                            <option value="db">데이터베이스</option>
-                            <option value="cache">캐시 서버</option>
-                        </select>
+
+                    <div class="form-section">
+                        <h3>리소스 설정</h3>
+                        <!-- <div class="form-group">
+                            <label for="ram">RAM (GB)</label>
+                            <input type="range" id="ram" name="ram" min="1" max="16" value="8" class="slider">
+                            <div class="slider-value">8GB</div>
+                        </div>
+                        <div class="form-group">
+                            <label for="storage">Storage (GB)</label>
+                            <input type="range" id="storage" name="storage" min="50" max="500" value="100" class="slider">
+                            <div class="slider-value">100GB</div>
+                        </div> -->
                     </div>
-                    <div class="form-group">
-                        <label for="serverSpec">서버 사양</label>
-                        <select id="serverSpec" name="serverSpec" required>
-                            <option value="">선택하세요</option>
-                            <option value="small">Small (2 CPU, 4GB RAM)</option>
-                            <option value="medium">Medium (4 CPU, 8GB RAM)</option>
-                            <option value="large">Large (8 CPU, 16GB RAM)</option>
-                        </select>
+
+                    <div class="network-preview">
+                        <h3>네트워크 구성도</h3>
+                        <div class="network-image">
+                            <img src="images/network-diagram.png" alt="네트워크 구성도">
+                            <div class="network-info">
+                                <p>WEB Server / 192.168.223.2</p>
+                                <p>DB Server / 192.168.x.30</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="networkType">네트워크 유형</label>
-                        <select id="networkType" name="networkType" required>
-                            <option value="">선택하세요</option>
-                            <option value="public">공개 네트워크</option>
-                            <option value="private">비공개 네트워크</option>
-                            <option value="hybrid">하이브리드</option>
-                        </select>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">생성하기</button>
+                        <button type="button" class="btn-cancel">취소</button>
                     </div>
-                    <div class="form-group">
-                        <label for="region">리전</label>
-                        <select id="region" name="region" required>
-                            <option value="">선택하세요</option>
-                            <option value="asia-northeast-1">아시아 태평양 (도쿄)</option>
-                            <option value="asia-northeast-2">아시아 태평양 (서울)</option>
-                            <option value="asia-northeast-3">아시아 태평양 (오사카)</option>
-                            <option value="us-west-1">미국 서부 (캘리포니아)</option>
-                            <option value="us-east-1">미국 동부 (버지니아)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="storage">스토리지 용량</label>
-                        <select id="storage" name="storage" required>
-                            <option value="">선택하세요</option>
-                            <option value="50">50GB SSD</option>
-                            <option value="100">100GB SSD</option>
-                            <option value="200">200GB SSD</option>
-                            <option value="500">500GB SSD</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn-primary">서버 생성</button>
                 </form>
             </div>
 
-            <!-- 네트워크 구성도 패널 -->
-            <div class="network-diagram-panel">
-                <h2>네트워크 구성도</h2>
-                <div id="networkDiagram"></div>
-                <div class="diagram-controls">
-                    <button class="btn-control" id="zoomIn">확대</button>
-                    <button class="btn-control" id="zoomOut">축소</button>
-                    <button class="btn-control" id="resetView">초기화</button>
+            <!-- 우측 정보 패널 -->
+            <div class="info-panel">
+                <div class="info-section">
+                    <h3>기본: 환경 선택(웹)</h3>
+                    <p>확장: 컨테이너 선택시 세부 옵션 조정</p>
+                </div>
+                <div class="info-section">
+                    <h3>컨테이너의 세부 옵션 조정</h3>
+                    <ul>
+                        <li>기능(백셀, 우선순위 낮음)</li>
+                        <li>공용 스토리지 마운트 여부</li>
+                        <li>컨테이너별 기본 스토리지</li>
+                        <li>이미지 선택(mysql, mariadb)</li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <script type="module" src="modules/network-diagram.js"></script>
-    <script type="module" src="script.js"></script>
+    <script>
+        // RAM 슬라이더 값 표시
+        const ramSlider = document.getElementById('ram');
+        const ramValue = ramSlider.nextElementSibling;
+        ramSlider.oninput = function() {
+            ramValue.textContent = this.value + 'GB';
+        }
+
+        // Storage 슬라이더 값 표시
+        const storageSlider = document.getElementById('storage');
+        const storageValue = storageSlider.nextElementSibling;
+        storageSlider.oninput = function() {
+            storageValue.textContent = this.value + 'GB';
+        }
+
+        // 서브도메인 추가 함수
+        function addSubdomain() {
+            const input = document.getElementById('subDomain');
+            const list = document.getElementById('subdomainList');
+            const value = input.value.trim();
+
+            if (value) {
+                const item = document.createElement('div');
+                item.className = 'subdomain-item';
+                item.innerHTML = `
+                    <span>${value}</span>
+                    <button type="button" class="btn-remove" onclick="this.parentElement.remove()">×</button>
+                `;
+                list.appendChild(item);
+                input.value = '';
+            }
+        }
+
+        // Enter 키로도 서브도메인 추가
+        document.getElementById('subDomain').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSubdomain();
+            }
+        });
+
+        // 폼 제출 시 서브도메인 목록 수집
+        document.getElementById('serverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const subdomains = Array.from(document.querySelectorAll('.subdomain-item span'))
+                .map(span => span.textContent);
+            
+            // 여기에 서브도메인 목록을 포함한 폼 데이터 처리 로직 추가
+            console.log('서브도메인 목록:', subdomains);
+        });
+    </script>
 </body>
 </html> 
