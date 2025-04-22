@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWEN v1.0</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
+    </header>
+
+    <div class="sub-header">
+        <div class="breadcrumb">대시보드 > 호스팅</div>
+        <nav class="sub-nav">
+            <a href="index.html" class="active">Dashboard</a>
+            <a href="hosting.html">Hosting pannel</a>
+            <a href="billing.html">Billing Page</a>
+        </nav>
+    </div>
+
+    <main class="dashboard-grid">
+        <div class="grid-item">
+            <h2>실시간 트래픽 & 성능</h2>
+            <div class="chart-container">
+                <div class="chart-placeholder">[트래픽/성능 그래프]</div>
+                <div class="stats">
+                    현재 rps: XXX / CPU: XX% / 메모리: XX% ...
+                </div>
+                <div class="chart-footer">
+                    예측 vs 실제 그래프 표시 가능
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>보안 이벤트 / 공격 로그</h2>
+            <table class="security-table">
+                <thead>
+                    <tr>
+                        <th>시간</th>
+                        <th>유형</th>
+                        <th>IP</th>
+                        <th>차단</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10:25</td>
+                        <td>SQL Injection</td>
+                        <td>192.168.0.10</td>
+                        <td>Y</td>
+                    </tr>
+                    <tr>
+                        <td>10:30</td>
+                        <td>DDoS</td>
+                        <td>203.0.113.5</td>
+                        <td>Y</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="grid-item">
+            <h2>구독/결제 현황</h2>
+            <div class="subscription-info">
+                <p>현재 플랜: Pro (월 5만원 + 초과 과금)</p>
+                <table class="billing-table">
+                    <thead>
+                        <tr>
+                            <th>기간</th>
+                            <th>기본료</th>
+                            <th>추가요금</th>
+                            <th>합계</th>
+                            <th>결제일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2025-04</td>
+                            <td>50,000원</td>
+                            <td>10,000원</td>
+                            <td>60,000원</td>
+                            <td>2025-04-25</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="billing-details">결제 상세</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>알림/이벤트 패널</h2>
+            <ul class="event-list">
+                <li>10:35 - 컨테이너 3-5 확장 (트래픽 폭증)</li>
+                <li>10:40 - 보안 위험도=0.85 → 보안 패치 이미지 배포</li>
+                <li>10:45 - SQL Injection 차단</li>
+            </ul>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 

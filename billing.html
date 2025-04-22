@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWEN v1.0 - Billing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
+    </header>
+
+    <div class="sub-header">
+        <div class="breadcrumb">결제 관리</div>
+        <nav class="sub-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="hosting.html">Hosting pannel</a>
+            <a href="billing.html" class="active">Billing Page</a>
+        </nav>
+    </div>
+
+    <main class="dashboard-grid">
+        <div class="grid-item">
+            <h2>현재 구독 정보</h2>
+            <div class="subscription-details">
+                <div class="plan-info">
+                    <h3>Pro 플랜</h3>
+                    <p class="price">월 50,000원</p>
+                    <ul class="plan-features">
+                        <li>무제한 트래픽</li>
+                        <li>5TB 스토리지</li>
+                        <li>24/7 기술지원</li>
+                        <li>SSL 인증서 무료</li>
+                    </ul>
+                </div>
+                <button class="action-button">플랜 변경</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>결제 수단</h2>
+            <div class="payment-methods">
+                <div class="current-card">
+                    <p>현재 결제 수단: 신용카드 (1234-xxxx-xxxx-5678)</p>
+                    <p>만료일: 12/25</p>
+                </div>
+                <button class="action-button">결제 수단 변경</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>결제 내역</h2>
+            <div class="billing-history">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>내역</th>
+                            <th>금액</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-04-01</td>
+                            <td>4월 Pro 플랜</td>
+                            <td>50,000원</td>
+                            <td>결제완료</td>
+                        </tr>
+                        <tr>
+                            <td>2024-03-01</td>
+                            <td>3월 Pro 플랜</td>
+                            <td>50,000원</td>
+                            <td>결제완료</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>사용량 통계</h2>
+            <div class="usage-stats">
+                <div class="stat-item">
+                    <h4>트래픽 사용량</h4>
+                    <p>이번 달: 2.3TB / 5TB</p>
+                    <div class="progress-bar">
+                        <div class="progress" style="width: 46%"></div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <h4>추가 과금</h4>
+                    <p>이번 달 예상: 10,000원</p>
+                    <p class="small">초과 트래픽: 0.3TB (5,000원)</p>
+                    <p class="small">추가 기능: 5,000원</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 

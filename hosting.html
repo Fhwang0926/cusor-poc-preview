@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWEN v1.0 - Hosting Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
+    </header>
+
+    <div class="sub-header">
+        <div class="breadcrumb">호스팅 패널</div>
+        <nav class="sub-nav">
+            <a href="index.html">Dashboard</a>
+            <a href="hosting.html" class="active">Hosting pannel</a>
+            <a href="billing.html">Billing Page</a>
+        </nav>
+    </div>
+
+    <main class="dashboard-grid">
+        <div class="grid-item">
+            <h2>서버 상태</h2>
+            <div class="hosting-status">
+                <p>상태: <span class="status-active">활성</span></p>
+                <p>서버 위치: Seoul (KR)</p>
+                <p>운영체제: Ubuntu 22.04 LTS</p>
+                <p>PHP 버전: 8.2</p>
+                <button class="action-button">서버 재시작</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>도메인 관리</h2>
+            <div class="domain-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>도메인</th>
+                            <th>상태</th>
+                            <th>SSL</th>
+                            <th>만료일</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>example.com</td>
+                            <td>활성</td>
+                            <td>발급됨</td>
+                            <td>2025-12-31</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="action-button">도메인 추가</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>백업 관리</h2>
+            <div class="backup-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>크기</th>
+                            <th>상태</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>2024-04-01</td>
+                            <td>2.3GB</td>
+                            <td>완료</td>
+                            <td><a href="#">복원</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="action-button">백업 생성</button>
+            </div>
+        </div>
+
+        <div class="grid-item">
+            <h2>데이터베이스</h2>
+            <div class="database-info">
+                <p>MySQL 버전: 8.0</p>
+                <p>사용량: 1.2GB / 5GB</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DB 이름</th>
+                            <th>크기</th>
+                            <th>상태</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>main_db</td>
+                            <td>1.2GB</td>
+                            <td>정상</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="action-button">DB 추가</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 
