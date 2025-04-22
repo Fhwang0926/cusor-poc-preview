@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>서버 생성 - Docker 컨테이너 호스팅</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 </head>
 <body>
     <header>
@@ -58,30 +59,12 @@
                         </div>
                     </div>
 
-                    <div class="form-section">
-                        <h3>리소스 설정</h3>
-                        <!-- <div class="form-group">
-                            <label for="ram">RAM (GB)</label>
-                            <input type="range" id="ram" name="ram" min="1" max="16" value="8" class="slider">
-                            <div class="slider-value">8GB</div>
-                        </div>
-                        <div class="form-group">
-                            <label for="storage">Storage (GB)</label>
-                            <input type="range" id="storage" name="storage" min="50" max="500" value="100" class="slider">
-                            <div class="slider-value">100GB</div>
-                        </div> -->
-                    </div>
 
                     <div class="network-preview">
-                        <h3>네트워크 구성도</h3>
-                        <div class="network-image">
-                            <img src="images/network-diagram.png" alt="네트워크 구성도">
-                            <div class="network-info">
-                                <p>WEB Server / 192.168.223.2</p>
-                                <p>DB Server / 192.168.x.30</p>
-                            </div>
-                        </div>
+                        <h3>추가 옵션</h3>
+                        
                     </div>
+                    
 
                     <div class="form-actions">
                         <button type="submit" class="btn-primary">생성하기</button>
@@ -94,20 +77,43 @@
             <div class="info-panel">
                 <div class="info-section">
                     <h3>기본: 환경 선택(웹)</h3>
-                    <p>확장: 컨테이너 선택시 세부 옵션 조정</p>
+                    <div id="networkDiagram" class="network-diagram"></div>
                 </div>
-                <div class="info-section">
-                    <h3>컨테이너의 세부 옵션 조정</h3>
-                    <ul>
-                        <li>기능(백셀, 우선순위 낮음)</li>
-                        <li>공용 스토리지 마운트 여부</li>
-                        <li>컨테이너별 기본 스토리지</li>
-                        <li>이미지 선택(mysql, mariadb)</li>
-                    </ul>
+                <div class="form-section">
+                    <h3>리소스 설정</h3>
+                    <div class="form-group">
+                        <label for="ram">RAM (GB)</label>
+                        <input type="range" id="ram" name="ram" min="1" max="16" value="8" class="slider">
+                        <div class="slider-value">8GB</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="storage">Storage (GB)</label>
+                        <input type="range" id="storage" name="storage" min="50" max="500" value="100" class="slider">
+                        <div class="slider-value">100GB</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>추가 옵션</h3>
+                    <div class="form-group">
+                        ##공용 경로 마운트
+                    </div>
+                    <div class="form-group">
+                        ##도커 이미지 선택
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <div class="network-diagram-panel">
+        <div id="network-diagram"></div>
+        <div class="diagram-controls">
+            <button id="zoom-in">확대</button>
+            <button id="zoom-out">축소</button>
+            <button id="reset-view">초기화</button>
+        </div>
+    </div>
 
     <script>
         // RAM 슬라이더 값 표시
@@ -159,6 +165,25 @@
             
             // 여기에 서브도메인 목록을 포함한 폼 데이터 처리 로직 추가
             console.log('서브도메인 목록:', subdomains);
+        });
+    </script>
+
+    <!-- vis.js 라이브러리 추가 -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="module">
+        import { initializeNetworkDiagram, updateNetworkDiagram } from './modules/network-diagram.js';
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // 네트워크 다이어그램 초기화
+            const network = initializeNetworkDiagram();
+            
+            // 서버 타입 선택 시 다이어그램 업데이트
+            const serverTypeSelect = document.getElementById('server-type');
+            if (serverTypeSelect) {
+                serverTypeSelect.addEventListener('change', (e) => {
+                    updateNetworkDiagram(network, e.target.value);
+                });
+            }
         });
     </script>
 </body>
