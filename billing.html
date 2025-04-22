@@ -36,7 +36,7 @@
                         <li>SSL 인증서 무료</li>
                     </ul>
                 </div>
-                <button class="action-button">플랜 변경</button>
+                <a class="action-button" href="pricing.html" style="text-align: center;">플랜 변경</a>
             </div>
         </div>
 
@@ -84,23 +84,93 @@
         <div class="grid-item">
             <h2>사용량 통계</h2>
             <div class="usage-stats">
-                <div class="stat-item">
-                    <h4>트래픽 사용량</h4>
-                    <p>이번 달: 2.3TB / 5TB</p>
-                    <div class="progress-bar">
-                        <div class="progress" style="width: 46%"></div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>이번 달 사용량</h4>
+                        <div class="stat-value">128GB</div>
+                        <div class="stat-change positive">+12% 증가</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>평균 일일 사용량</h4>
+                        <div class="stat-value">4.2GB</div>
+                        <div class="stat-change negative">-5% 감소</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>피크 사용량</h4>
+                        <div class="stat-value">8.5GB</div>
+                        <div class="stat-change">최대치</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>이번 달 예상 비용</h4>
+                        <div class="stat-value">55,000원</div>
+                        <div class="cost-details">
+                            <p>기본 요금: 50,000원</p>
+                            <p>초과 트래픽: +5,000원</p>
+                        </div>
                     </div>
                 </div>
-                <div class="stat-item">
-                    <h4>추가 과금</h4>
-                    <p>이번 달 예상: 10,000원</p>
-                    <p class="small">초과 트래픽: 0.3TB (5,000원)</p>
-                    <p class="small">추가 기능: 5,000원</p>
+
+                <div class="monthly-stats">
+                    <h4>최근 3개월 사용량 추이</h4>
+                    <div class="chart-container" style="position: relative; height: 300px;">
+                        <canvas id="usageChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <!-- Chart.js 라이브러리 추가 -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // 사용량 추이 차트 초기화
+        const ctx = document.getElementById('usageChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                datasets: [
+                    {
+                        label: '일일 평균 사용량 (GB)',
+                        data: [1.8, 4.5, 4.2, 2.8, 4.5, 4.2],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    },
+                    {
+                        label: '피크 사용량 (GB)',
+                        data: [1.2, 8.1, 8.5, 10.2, 8.1, 8.5],
+                        borderColor: '#dc2626',
+                        backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                        fill: true,
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    title: {
+                        display: true,
+                        text: '월별 사용량 통계'
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: '사용량 (GB)'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html> 

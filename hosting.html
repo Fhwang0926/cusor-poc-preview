@@ -27,26 +27,51 @@
         <div class="hosting-card">
             <div class="card-header">
                 <img src="images/infra_1.png" alt="서버 인프라 구성" class="card-image">
-                <h2>서버 관리</h2>
+                <h2>shop.3vi.co.kr</h2>
             </div>
             <div class="card-content">
                 <div class="resource-list">
                     <div class="resource-item">
                         <div class="resource-header">
-                            <div class="resource-icon server-icon">🖥️</div>
                             <div class="resource-info">
-                                <h3>메인 서버</h3>
-                                <p><span class="status-badge status-active">활성</span></p>
+                                <p>오토스케일링 <span class="status-badge status-active">활성</span></p>
+                                <p>AI 보안 <span class="status-badge status-active">활성</span></p>
                             </div>
                         </div>
-                        <div class="resource-details">
-                            <p>위치: Seoul (KR)</p>
-                            <p>OS: Ubuntu 22.04 LTS</p>
-                            <p>PHP: 8.2</p>
+                        <div class="resource-actions">
+                            <button class="action-button primary">관리</button>
+                        </div>
+                        <hr>
+                        <div class="resource-info">
+                            <span style="float: left;">최근 업데이트</span>
+                            <span class="status-badge" style="float: right;">10:24</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hosting-card">
+            <div class="card-header">
+                <img src="images/infra_3.png" alt="서버 인프라 구성" class="card-image">
+                <h2>demo.3vi.co.kr</h2>
+            </div>
+            <div class="card-content">
+                <div class="resource-list">
+                    <div class="resource-item">
+                        <div class="resource-header">
+                            <div class="resource-info">
+                                <p>오토스케일링 <span class="status-badge status-active">활성</span></p>
+                                <p>AI 보안 <span class="status-badge status-inactive">비활성</span></p>
+                            </div>
                         </div>
                         <div class="resource-actions">
-                            <button class="action-button primary">재시작</button>
-                            <button class="action-button">설정</button>
+                            <button class="action-button primary">관리</button>
+                        </div>
+                        <hr>
+                        <div class="resource-info">
+                            <span style="float: left;">최근 업데이트</span>
+                            <span class="status-badge" style="float: right;">11:24</span>
                         </div>
                     </div>
                 </div>
@@ -56,9 +81,11 @@
         <!-- 서버 카드 -->
         <div class="hosting-card">
             <div class="card-content">
-                <button class="add-resource-btn" style="height: 500px; width: -webkit-fill-available; text-align: center; display:block;" data-type="server">
-                    <span>+</span> 서버 추가
-                </button>
+                <a href="create-server.html" style="text-decoration: none;">
+                    <button class="add-resource-btn" style="height: 540px; width: -webkit-fill-available; text-align: center; display:block;" data-type="server">
+                        <span>+</span> 서버 추가
+                    </button>
+                </a>
             </div>
         </div>
 

@@ -65,35 +65,29 @@
                 <thead>
                     <tr>
                         <th>시간</th>
-                        <th>유형</th>
-                        <th>공격자</th>
+                        <th>IP</th>
+                        <th>이벤트</th>
                         <th>자동 대응</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>10:25</td>
-                        <td>SQL Injection</td>
-                        <td>192.168.0.10</td>
-                        <td>모니터링</td>
+                        <td>09:15</td>
+                        <td>192.168.1.100</td>
+                        <td>로그인 시도</td>
+                        <td><span class="status-monitor">모니터링</span></td>
                     </tr>
                     <tr>
-                        <td>10:30</td>
-                        <td>DDoS</td>
-                        <td>203.0.113.5</td>
-                        <td>차단</td>
+                        <td>08:30</td>
+                        <td>192.168.1.105</td>
+                        <td>비정상 트래픽</td>
+                        <td><span class="status-suspicious">의심</span></td>
                     </tr>
                     <tr>
-                        <td>09:30</td>
-                        <td>비정상 활동</td>
-                        <td>13.2.22.12</td>
-                        <td>의심</td>
-                    </tr>
-                    <tr>
-                        <td>09:10</td>
-                        <td>자원 소진 공격</td>
-                        <td>192.168.2.33</td>
-                        <td>차단</td>
+                        <td>07:45</td>
+                        <td>192.168.1.110</td>
+                        <td>무차별 대입 공격</td>
+                        <td><span class="status-blocked">차단</span></td>
                     </tr>
                 </tbody>
             </table>
@@ -123,7 +117,7 @@
                         </tr>
                     </tbody>
                 </table>
-                <button class="billing-details">결제 상세</button>
+                <a href="billing.html" class="billing-details">결제 상세</a>
             </div>
         </div>
 
@@ -138,7 +132,6 @@
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 </html> 
