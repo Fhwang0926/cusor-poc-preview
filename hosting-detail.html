@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서버 생성 - Docker 컨테이너 호스팅</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">AWEN v1.0</a></div>
+        <div class="user">demo@3vi.co.kr (Client)</div>
+    </header>
+
+    <div class="sub-header">
+        <div class="breadcrumb">호스팅 패널</div>
+        <nav class="sub-nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="hosting.html" class="active">Hosting pannel</a>
+            <a href="billing.html">Billing Page</a>
+            <a href="pricing.html">Pricing</a>
+        </nav>
+    </div>
+
+    <main class="container">
+        <div class="hosting-card">
+            <div class="card-header" style="text-align: center;">
+                <img src="images/setep_preview.png" alt="서버 인프라 구성" class="card-image" style="max-width: 100%; height: auto;">
+            </div>
+        </div>
+    </main>
+
+    <!-- 네트워크 다이어그램 패널에서 버튼 제거 -->
+    <div class="network-diagram-panel">
+        <div id="network-diagram"></div>
+    </div>
+
+    <!-- vis.js 라이브러리 추가 -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="module">
+        import { initializeNetworkDiagram, updateNetworkTemplate } from './modules/network-diagram.js';
+        
+        // 전역 변수로 network 선언
+        window.network = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // 네트워크 다이어그램 초기화
+            window.network = initializeNetworkDiagram();
+            
+            // 네트워크 템플릿 선택 이벤트 리스너
+            const templateSelect = document.getElementById('networkTemplate');
+            if (templateSelect) {
+                templateSelect.addEventListener('change', (e) => {
+                    updateNetworkTemplate(window.network, e.target.value);
+                });
+            }
+
+            // DB 이미지 선택기 표시/숨김 처리
+            const networkTemplate = document.getElementById('networkTemplate');
+            const dbImageSelector = document.getElementById('dbImageSelector');
+            
+            function updateServerSelectors(selectedNode) {
+                const webTypeSelect = document.getElementById('webType');
+                const dbTypeSelect = document.getElementById('dbType');
+                const nodeLabel = selectedNode ? selectedNode.label.toLowerCase() : '';
+
+                // 웹 서버 선택기 업데이트
+                if (nodeLabel.includes('web')) {
+                    webTypeSelect.disabled = false;
+                } else {
+                    webTypeSelect.disabled = true;
+                    webTypeSelect.value = '';
+                }
+
+                // DB 선택기 업데이트
+                if (nodeLabel.includes('db')) {
+                    dbTypeSelect.disabled = false;
+                } else {
+                    dbTypeSelect.disabled = true;
+                    dbTypeSelect.value = '';
+                }
+            }
+
+            // 노드 선택 이벤트에서 선택기 표시/숨김 처리
+            window.network.on('select', function(params) {
+                const nodeId = params.nodes[0];
+                if (nodeId) {
+                    const node = window.network.body.data.nodes.get(nodeId);
+                    updateServerSelectors(node);
+                } else {
+                    updateServerSelectors(null);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // RAM 슬라이더 값 표시
+        const ramSlider = document.getElementById('ram');
+        const ramValue = document.getElementById('ramValue');
+        ramSlider.oninput = function() {
+            ramValue.textContent = this.value;
+        }
+
+        // Storage 슬라이더 값 표시
+        const storageSlider = document.getElementById('storage');
+        const storageValue = document.getElementById('storageValue');
+        storageSlider.oninput = function() {
+            storageValue.textContent = this.value;
+        }
+
+        // 서브도메인 추가 함수
+        function addSubdomain() {
+            const input = document.getElementById('subDomain');
+            const list = document.getElementById('subdomainList');
+            const value = input.value.trim();
+
+            if (value) {
+                const item = document.createElement('div');
+                item.className = 'subdomain-item';
+                item.innerHTML = `
+                    <span>${value}</span>
+                    <button type="button" class="btn-remove" onclick="this.parentElement.remove()">×</button>
+                `;
+                list.appendChild(item);
+                input.value = '';
+            }
+        }
+
+        // Enter 키로도 서브도메인 추가
+        document.getElementById('subDomain').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addSubdomain();
+            }
+        });
+
+        // 폼 제출 시 서브도메인 목록 수집
+        document.getElementById('serverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const subdomains = Array.from(document.querySelectorAll('.subdomain-item span'))
+                .map(span => span.textContent);
+            
+            // 여기에 서브도메인 목록을 포함한 폼 데이터 처리 로직 추가
+            console.log('서브도메인 목록:', subdomains);
+        });
+
+        // 리소스 슬라이더 값 업데이트
+        function updateResourceValues() {
+            const ram = document.getElementById('ram');
+            const storage = document.getElementById('storage');
+            
+            document.getElementById('ramValue').textContent = ram.value;
+            document.getElementById('storageValue').textContent = storage.value;
+        }
+
+        // 슬라이더 이벤트 리스너
+        document.getElementById('ram').addEventListener('input', updateResourceValues);
+        document.getElementById('storage').addEventListener('input', updateResourceValues);
+
+        // 초기 값 설정
+        updateResourceValues();
+    </script>
+
+    <style>
+    .range-container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin-top: 0.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .range-marks {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 2px;
+        margin-top: 8px;
+        color: #666;
+        font-size: 0.8rem;
+    }
+
+    .range-container.disabled::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(240, 240, 240, 0.6);
+        border-radius: 8px;
+        pointer-events: none;
+    }
+
+    .resource-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .recommended {
+        color: #666;
+        font-size: 0.85rem;
+        font-weight: normal;
+        margin-left: 0.5rem;
+    }
+
+    .current-value {
+        color: #2563eb;
+        font-weight: 500;
+        font-size: 0.95rem;
+        min-width: 60px;
+        text-align: right;
+    }
+
+    .slider {
+        width: 100%;
+        height: 6px;
+        border-radius: 3px;
+        background: #e0e0e0;
+        outline: none;
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #2563eb;
+        cursor: pointer;
+        box-shadow: none;
+        transition: all 0.2s ease;
+    }
+
+    .slider:disabled::-webkit-slider-thumb {
+        background: #ccc;
+        cursor: not-allowed;
+    }
+
+    .slider::-webkit-slider-runnable-track {
+        height: 6px;
+        border-radius: 3px;
+        background: #e0e0e0;
+    }
+
+    .slider:disabled::-webkit-slider-runnable-track {
+        background: #f0f0f0;
+    }
+
+    .resource-info {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+
+    .info-text {
+        color: #666;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+
+    .warning-text {
+        color: #dc2626;
+        margin: 1rem 0 0 0;
+        font-size: 0.9rem;
+    }
+
+    #resourceForm {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    #selectedNodeLabel {
+        color: #2563eb;
+        font-weight: normal;
+    }
+
+    .form-group {
+        margin-bottom: 2rem;
+    }
+
+    .form-group label {
+        color: #374151;
+        font-weight: 500;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .option-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .toggle-label {
+        font-size: 0.95rem;
+        color: #374151;
+        font-weight: 500;
+    }
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 24px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .toggle-slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #e0e0e0;
+        transition: .4s;
+        border-radius: 24px;
+    }
+
+    .toggle-slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .toggle-slider {
+        background-color: #2563eb;
+    }
+
+    input:checked + .toggle-slider:before {
+        transform: translateX(24px);
+    }
+
+    #webType,
+    #dbType {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        color: #374151;
+        background-color: white;
+        transition: all 0.2s ease;
+    }
+
+    #webType:disabled,
+    #dbType:disabled {
+        background-color: #f3f4f6;
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    #webType:focus,
+    #dbType:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+    }
+
+    .server-select-info {
+        margin-top: 0.5rem;
+        color: #666;
+        font-size: 0.9rem;
+    }
+    </style>
+
+    <div style="padding: 20px; position: fixed; bottom: 0; left: 0; right: 0; background: white; box-shadow: 0 -2px 10px rgba(0,0,0,0.1);">
+        <a href="hosting.html" style="display: block; text-decoration: none;">
+            <button class="action-button primary" style="width: 100%; height: 50px; font-size: 16px;">← 뒤로가기</button>
+        </a>
+    </div>
+
+    <!-- 리소스 추가 모달 -->
+</body>
+</html> 
